@@ -1,190 +1,202 @@
-# DEBATE AI – Think Both Sides
+# DebateAI – Think Both Sides
 
-> **Production-grade full-stack web application for balanced, source-grounded, fact-verified debate intelligence.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/Frontend-React_18_%2B_Vite_%2B_Tailwind-61dafb.svg)](frontend/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI_%2B_Python_3.11-009688.svg)](backend/)
+[![Deploy on Vercel](https://vercel.com/button)](https://vercel.com/new)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+> **A modern, balanced AI debate generator that researches, synthesizes, and fact-verifies both sides of any motion, question, or controversy.**
 
 ---
 
 ## 1. Overview & Core Promise
 
-**DEBATE AI – Think Both Sides** enables students, debate team competitors, policy researchers, and public speakers to enter any debate topic (motion, controversial question, or policy issue) and receive:
+**DebateAI** empowers students, competitive debate teams, public speakers, policy researchers, and critical thinkers to explore complex topics with intellectual rigor and zero bias.
 
-- **Strictly Balanced Arguments**: Equal quantity (3, 5, or 7) and equal intellectual rigor for both the **AFFIRMATIVE (FOR)** and **NEGATIVE (AGAINST)** positions.
-- **Audited Truth Labeling**: Every single claim, statistic, study, and quotation is evaluated through a multi-stage verification pipeline with honest epistemic labels:
-  - `VERIFIED`: Directly corroborated by an active web source verified via HTTP 2xx resolution check.
-  - `UNVERIFIED`: Plausible empirical assertion without verified search citation (flagged with a prominent warning).
-  - `OPINION`: Normative, ethical, or deductive reasoning.
-  - `DATA UNAVAILABLE`: Explicitly marked when empirical data does not exist or remains contested.
-- **Rebuttal Arena**: Per-argument opponent challenges, turnaround responses, supporting evidence, and vulnerability notes.
-- **Debate Preparation Dossier**: Ready-to-deliver timed speeches (sized to 2, 5, or 10 minutes at ~130 wpm), 8–10 cross-examination questions to ask, 8–10 questions to anticipate with strategic answers, and a strategy checklist.
-- **Export Capabilities**: Clean, formatted PDF and Markdown dossier downloads.
-
----
-
-## 2. Tech Stack
-
-- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, Framer Motion, React Router v6.
-- **Backend**: Python 3.11+, FastAPI, Pydantic v2, SQLAlchemy 2, ReportLab, HTTPX.
-- **Database**: SQLite default (zero-configuration); PostgreSQL supported via `DATABASE_URL`.
-- **LLM Layer**: Agnostic service supporting Anthropic (Claude 3.5 Sonnet), OpenAI (GPT-4o), Google Gemini, and a built-in fallback heuristic engine for offline/demo operation.
-- **Research Engine**: Tavily API, Brave Search API, and Web fallback with brief TTL caching.
+Instead of generic chatbot answers, DebateAI delivers:
+1. **Symmetrical Dual Perspectives:** Exactly equal argument count (3, 5, or 7) and equal logical depth for both the **FOR (Proposition)** and **AGAINST (Opposition)** positions.
+2. **4-Tier Epistemic Fact Verification:**
+   - `✓ VERIFIED`: Directly supported by active web sources verified with HTTP 200 checks.
+   - `⚠ UNVERIFIED`: Plausible empirical claims not yet corroborated (highlighted with an audit alert).
+   - `💬 OPINION`: Normative, ethical, or philosophical reasoning (clearly separated from factual claims).
+   - `❓ DATA UNAVAILABLE`: Explicitly declared when empirical data does not exist, preventing AI hallucination.
+3. **Rebuttal Arena:** For every argument, view the primary opponent counter-challenge, turnaround defense, and vulnerability analysis.
+4. **Debate Preparation Dossier:** Ready-to-deliver constructive speeches calculated at ~130 words per minute, cross-examination questions, and anticipated questions with suggested answers.
+5. **Interactive Podium Stopwatch & Teleprompter:** Practice speeches directly in the browser with timer and font size controls.
+6. **One-Click Export:** Download full dossiers as PDF or Markdown, or copy complete formatted debate text with one click.
 
 ---
 
-## 3. Project Structure
+## 2. Design System
+
+- **Color Palette:** Warm ivory (`#F6F3EA`), deep cobalt blue (`#244DDB`), vibrant orange (`#FF7043`), and charcoal (`#252525`).
+- **Typography:** Clean, highly readable standard sans-serif (**Inter**).
+- **Layout:** Symmetrical two-column debate desks with clean borders and zero visual clutter.
+
+---
+
+## 3. Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React 18, Vite 5, TypeScript, Tailwind CSS, Lucide Icons, React Router v6 |
+| **Backend** | Python 3.11+, FastAPI, Pydantic v2, SQLAlchemy 2, ReportLab (PDF), HTTPX |
+| **Database** | SQLite (default zero-config) or PostgreSQL via `DATABASE_URL` |
+| **AI Providers** | Agnostic LLM engine supporting Google Gemini (Free), OpenAI (GPT-4o), Anthropic (Claude), and a built-in domain reasoning engine |
+| **Research** | Web search with HTTP 2xx link verification and in-memory TTL caching |
+| **Deployment** | Vercel, Render, Railway, Docker, or any standard Linux VPS |
+
+---
+
+## 4. Quickstart (Run Locally in 2 Minutes)
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+ & npm
+
+### Step 1: Clone and install dependencies
+
+```bash
+# Clone repository
+git clone https://github.com/<your-username>/debate-ai.git
+cd debate-ai
+
+# Install backend dependencies
+cd backend
+pip install -r requirements.txt
+cd ..
+
+# Install frontend dependencies
+cd frontend
+npm install
+cd ..
+```
+
+### Step 2: Run Development Servers
+
+In Terminal 1 (Backend):
+```bash
+python -m uvicorn --app-dir backend app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+In Terminal 2 (Frontend):
+```bash
+npm --prefix frontend run dev
+```
+
+Open [http://localhost:5173/](http://localhost:5173/) in your browser!
+
+---
+
+## 5. Deployment Options
+
+### Option A: Deploy to Vercel (Fastest)
+
+1. Open your terminal in the project folder:
+   ```bash
+   npx vercel
+   ```
+2. Follow the 30-second prompts to deploy directly to `https://your-app.vercel.app`!
+
+*Or via the [Vercel Dashboard](https://vercel.com):*
+- Connect your GitHub repository.
+- Framework: **Vite**
+- Root Directory: `frontend` (or root using included `vercel.json`)
+- Click **Deploy**.
+
+---
+
+### Option B: Deploy to Render.com (Free Tier with Docker)
+
+DebateAI includes a ready-to-use `render.yaml` and multi-stage `Dockerfile`:
+
+1. Push your repository to GitHub.
+2. Go to [render.com](https://render.com) &rarr; **New +** &rarr; **Web Service**.
+3. Select your repository. Render automatically detects the `Dockerfile` and builds the unified server.
+4. Click **Create Web Service**.
+
+---
+
+### Option C: Deploy with Docker Compose
+
+Run the entire application in a single production container:
+
+```bash
+docker compose up --build -d
+```
+Your application will be live at `http://localhost:8000`.
+
+---
+
+### Option D: Local Wi-Fi Network Access
+
+The application is configured to listen across your local network:
+- From your phone or tablet on the same Wi-Fi, open: `http://<YOUR-LOCAL-IP>:8000/`
+
+---
+
+## 6. Project Structure
 
 ```
 debate-ai/
+├── api/
+│   └── index.py                     # Vercel serverless entrypoint
 ├── backend/
 │   ├── app/
-│   │   ├── main.py                  # FastAPI application, CORS, lifecycle
-│   │   ├── config.py                # Environment configuration
-│   │   ├── db.py                    # SQLAlchemy 2 engine & session
+│   │   ├── main.py                  # FastAPI app & unified frontend static server
+│   │   ├── config.py                # App configuration & environment loader
+│   │   ├── db.py                    # SQLAlchemy 2 database session
 │   │   ├── models.py                # Debate & Source ORM models
-│   │   ├── schemas.py               # Pydantic v2 validation models
-│   │   ├── routers/
-│   │   │   ├── health.py            # Health probe & provider status
-│   │   │   ├── history.py           # History query, pagination, delete
-│   │   │   └── debates.py           # Debate generation, SSE stream, PDF/MD export
+│   │   ├── schemas.py               # Pydantic v2 schemas
+│   │   ├── routers/                 # debates.py, health.py, history.py
 │   │   ├── services/
-│   │   │   ├── llm_service.py       # Provider-agnostic LLM interface
-│   │   │   ├── search_service.py    # Tavily, Brave, and web retrieval
-│   │   │   ├── source_verifier.py   # HTTP 2xx link checks & evidence auditor
-│   │   │   └── debate_pipeline.py   # 6-stage background orchestrator
+│   │   │   ├── debate_pipeline.py   # 6-stage async pipeline
+│   │   │   ├── llm_service.py       # Gemini, OpenAI, Claude & heuristic engine
+│   │   │   ├── search_service.py    # Search retrieval & caching
+│   │   │   └── source_verifier.py   # HTTP 2xx link verification
 │   │   └── prompts/                 # Modular debate prompts
-│   │       ├── interpret_classify.txt
-│   │       ├── arguments.txt
-│   │       ├── rebuttals.txt
-│   │       └── prep.txt
-│   ├── tests/
-│   │   └── test_api.py              # Pytest backend validation
+│   ├── tests/                       # Pytest test suite
 │   ├── Dockerfile
-│   ├── requirements.txt
-│   └── .env.example
+│   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── api/client.ts            # API & SSE stream client
-│   │   ├── components/              # Badges, modals, progress, navbar, sources
-│   │   ├── hooks/                   # useLocalStorage
-│   │   ├── pages/                   # Home, Results, Rebuttals, Prep, History, About
-│   │   ├── types/debate.ts          # TypeScript domain interfaces
+│   │   ├── api/client.ts            # Frontend API & SSE stream client
+│   │   ├── components/              # Navbar, EvidenceBadge, SourcesPanel, Modals
+│   │   ├── pages/                   # HomePage, Results, Rebuttals, Prep, History, About
+│   │   ├── types/debate.ts          # TypeScript models
 │   │   ├── App.tsx
-│   │   ├── main.tsx
 │   │   └── index.css
-│   ├── Dockerfile
 │   ├── package.json
 │   ├── tailwind.config.js
 │   └── vite.config.ts
+├── Dockerfile                       # Multi-stage production Docker build
 ├── docker-compose.yml
-├── .gitignore
+├── render.yaml                      # Render Blueprint
+├── vercel.json                      # Vercel configuration
+├── Procfile                         # Heroku/Railway Procfile
+├── DEPLOYMENT.md                    # Detailed deployment guide
+├── LICENSE                          # MIT License
 └── README.md
 ```
 
 ---
 
-## 4. Setup & Running the Application
+## 7. Environment Variables (Optional)
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ (or 20+) & npm
+Configure in `.env` or in your hosting provider's dashboard:
 
-### Step 1: Clone & Configure Environment
-Create `.env` inside `backend/`:
-```bash
-cp backend/.env.example backend/.env
-```
-
-Edit `backend/.env` with your API keys:
-```env
-DATABASE_URL=sqlite:///./debate_ai.db
-
-# LLM Providers (Configure at least one for live AI generation)
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-OPENAI_API_KEY=
-GEMINI_API_KEY=
-
-# Search Providers (Optional: provides fresh web facts)
-TAVILY_API_KEY=your_tavily_api_key_here
-BRAVE_SEARCH_API_KEY=
-```
-*(Note: If no API keys are provided, DEBATE AI seamlessly falls back to its built-in structured reasoning engine, ensuring the app runs out-of-the-box without errors!)*
-
-### Step 2: Start the Backend
-From the project root:
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-Backend API will be live at `http://127.0.0.1:8000` (Docs: `http://127.0.0.1:8000/docs`).
-
-### Step 3: Start the Frontend
-In a new terminal window:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Frontend will be available at `http://localhost:5173`.
+| Variable | Description | Default |
+|---|---|---|
+| `PORT` | Server Port | `8000` |
+| `DATABASE_URL` | SQLite or PostgreSQL connection string | `sqlite:///./debate_ai.db` |
+| `GEMINI_API_KEY` | Google Gemini API Key | *(Can also be entered in the web UI)* |
+| `OPENAI_API_KEY` | OpenAI API Key (GPT-4o) | *(Optional)* |
+| `ANTHROPIC_API_KEY` | Anthropic Claude API Key | *(Optional)* |
+| `TAVILY_API_KEY` | Tavily Web Search API Key | *(Optional)* |
 
 ---
 
-## 5. How to Obtain API Keys
+## 8. License
 
-- **Anthropic API (Claude)**: Visit [console.anthropic.com](https://console.anthropic.com), create an account, navigate to API Keys, and create a key.
-- **OpenAI API**: Visit [platform.openai.com](https://platform.openai.com/api-keys) and generate a Secret Key.
-- **Google Gemini API**: Visit [aistudio.google.com](https://aistudio.google.com/app/apikey) and generate a free API key.
-- **Tavily Search API**: Visit [tavily.com](https://tavily.com) for 1,000 free research queries/month.
-- **Brave Search API**: Visit [brave.com/search/api](https://brave.com/search/api/) for web search API access.
-
----
-
-## 6. How Fact Verification & Grounding Works
-
-1. **Interpretation & Classification**: The backend frames the topic neutrally and detects if it is time-sensitive (ongoing policy, fluctuating prices, current events) or enduring.
-2. **Targeted Search**: Generates 4 empirical queries targeting peer-reviewed studies, government databases, and legal precedents for both sides.
-3. **No Hallucinated URLs**: The LLM is constrained to only cite URLs retrieved by the search pass.
-4. **Active HTTP Verification**: The backend asynchronously probes each cited URL (HTTP HEAD/GET range). Any link failing HTTP 2xx or timing out is stripped and downgraded.
-5. **Epistemic Labeling**: Evidence items receive strict color-coded badges (`VERIFIED`, `UNVERIFIED`, `OPINION`, `DATA UNAVAILABLE`).
-6. **Sources Drawer**: A full audit log of all retrieved articles, publishers, snippets, and resolution statuses is available on every debate.
-
----
-
-## 7. Switching from SQLite to PostgreSQL
-
-No code changes are required. Simply update `DATABASE_URL` in `backend/.env`:
-```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/debate_ai
-```
-Install the PostgreSQL driver:
-```bash
-pip install psycopg2-binary
-```
-FastAPI and SQLAlchemy will automatically create all tables on application startup.
-
----
-
-## 8. Docker Deployment
-
-To run the entire full-stack application using Docker:
-```bash
-docker-compose up --build
-```
-Access the application at `http://localhost:5173`.
-
----
-
-## 9. Testing
-
-To run the automated backend test suite:
-```bash
-$env:PYTHONPATH="backend"
-python -m pytest backend/tests -v
-```
-
----
-
-## 10. Known Limitations
-
-- **Paywalled Repositories**: Scientific journals behind paywalls cannot have their full text inspected by the automated HTTP crawler and may be flagged `unverified`.
-- **Search Rate Limits**: Free-tier search accounts (Tavily/Brave) have query quotas. DEBATE AI mitigates this with an in-memory TTL query cache and automatic fallback.
-
+This project is licensed under the [MIT License](LICENSE).

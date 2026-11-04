@@ -69,3 +69,4 @@ You can optionally configure these in your cloud provider's dashboard:
 | `OPENAI_API_KEY` | OpenAI API Key | *(Optional)* |
 | `ANTHROPIC_API_KEY`| Anthropic Claude API Key | *(Optional)* |
 | `TAVILY_API_KEY` | Tavily Web Search Key | *(Optional)* |
+

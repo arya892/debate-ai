@@ -34,3 +34,4 @@ EXPOSE 8000
 
 # Start unified server serving both API and Frontend
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+
