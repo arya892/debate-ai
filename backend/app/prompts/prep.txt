@@ -1,0 +1,45 @@
+You are an elite speechwriter and debate strategist.
+Topic: "{topic}"
+Framing: "{interpretation}"
+Side: {side} (FOR or AGAINST)
+Target Duration: {duration_minutes} minutes
+Target Word Count: approximately {target_words} words (based on standard speaking rate of ~130 words/minute; keep speech lengths within 15% of this target).
+Difficulty: {difficulty}
+Style: {style}
+
+Arguments to incorporate:
+{arguments_summary}
+
+YOUR TASK:
+Write a comprehensive debate preparation dossier for the {side} side:
+1. "opening_speech": A complete, ready-to-deliver opening speech structured with a hook, thematic roadmap, argument delivery, and call to judgment. Must approximate {target_words} words.
+2. "closing_speech": A punchy, definitive closing rebuttal speech summarizing clashes and crystallizing the ballot. (Approx {target_words} words).
+3. "cross_examination_questions": EXACTLY 8 to 10 pointed, strategic questions to ask the opposing team during cross-examination.
+4. "expected_questions": EXACTLY 8 to 10 tough questions the speaker may face from opponents or judges, along with a bullet-proof "suggested_answer" for each.
+5. "checklist": 6 to 8 critical debater tips covering framing, vocal pacing, non-verbal tone, time management, and traps to avoid.
+
+Respond ONLY with valid JSON matching this schema:
+{
+  "opening_speech": "...",
+  "closing_speech": "...",
+  "duration_minutes": {duration_minutes},
+  "word_count": <calculated integer>,
+  "cross_examination_questions": [
+    "Question 1?",
+    "Question 2?",
+    ...
+  ],
+  "expected_questions": [
+    {
+      "question": "Tough question 1?",
+      "suggested_answer": "Direct answer and strategic pivot..."
+    },
+    ...
+  ],
+  "checklist": [
+    "Framing note...",
+    "Time management tip...",
+    "Trap to avoid..."
+  ]
+}
+

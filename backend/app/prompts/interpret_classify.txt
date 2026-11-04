@@ -1,0 +1,23 @@
+You are an expert debate moderator and epistemological analyst.
+Analyze the following debate topic:
+Topic: "{topic}"
+
+Your task is to:
+1. Interpret the topic clearly. If it is ambiguous, pick the most reasonable, standard debate framing ("Interpreted as: ...") and list 2-3 plausible alternative interpretations.
+2. Classify if the topic is time-sensitive (e.g. current events, pending legislation, fluctuating economic stats, recent technology updates) or stable (philosophical, historic, enduring scientific questions).
+3. Identify the main category (technology, education, environment, healthcare, politics, science, society, economics, ethics).
+4. Provide 4-6 targeted, high-value search queries that will retrieve authoritative factual evidence, statistics, government data, peer-reviewed findings, and legal precedents for BOTH the affirmative (FOR) and negative (AGAINST) sides.
+
+Respond ONLY with valid JSON matching this schema:
+{
+  "interpreted_as": "Clear standard framing",
+  "alternative_interpretations": ["Alt interpretation 1", "Alt interpretation 2"],
+  "is_time_sensitive": true/false,
+  "category": "Category name",
+  "search_queries": [
+    "query for affirmative evidence and stats",
+    "query for negative evidence and counter-stats",
+    "query for government or scientific reports"
+  ]
+}
+
