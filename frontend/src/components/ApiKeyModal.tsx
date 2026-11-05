@@ -15,6 +15,16 @@ export const ApiKeyModal: React.FC<Props> = ({ isOpen, onClose, onKeysUpdated })
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    try {
+      setGeminiKey(localStorage.getItem('gemini_api_key') || '');
+      setOpenaiKey(localStorage.getItem('openai_api_key') || '');
+      setAnthropicKey(localStorage.getItem('anthropic_api_key') || '');
+      setTavilyKey(localStorage.getItem('tavily_api_key') || '');
+    } catch (e) {}
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSave = async (e: React.FormEvent) => {
@@ -22,8 +32,20 @@ export const ApiKeyModal: React.FC<Props> = ({ isOpen, onClose, onKeysUpdated })
     setSaving(true);
     setMessage(null);
 
+    // Save to localStorage immediately so client engine can use it
     try {
-      const res = await fetch('/api/settings/keys', {
+      if (geminiKey.trim()) localStorage.setItem('gemini_api_key', geminiKey.trim());
+      else localStorage.removeItem('gemini_api_key');
+      if (openaiKey.trim()) localStorage.setItem('openai_api_key', openaiKey.trim());
+      else localStorage.removeItem('openai_api_key');
+      if (anthropicKey.trim()) localStorage.setItem('anthropic_api_key', anthropicKey.trim());
+      else localStorage.removeItem('anthropic_api_key');
+      if (tavilyKey.trim()) localStorage.setItem('tavily_api_key', tavilyKey.trim());
+      else localStorage.removeItem('tavily_api_key');
+    } catch (e) {}
+
+    try {
+      await fetch('/api/settings/keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -33,19 +55,16 @@ export const ApiKeyModal: React.FC<Props> = ({ isOpen, onClose, onKeysUpdated })
           tavily_api_key: tavilyKey || undefined,
         }),
       });
-
-      if (!res.ok) throw new Error('Failed to update API keys');
-      await res.json();
-      setMessage('Keys updated! Live reasoning engine active.');
-      setSaving(false);
-      if (onKeysUpdated) onKeysUpdated();
-      setTimeout(() => {
-        onClose();
-      }, 1200);
     } catch (err: any) {
-      setMessage('Error updating keys. Please try again.');
-      setSaving(false);
+      // Backend offline / static hosting mode is completely normal
     }
+
+    setMessage('Keys updated! Live AI reasoning active.');
+    setSaving(false);
+    if (onKeysUpdated) onKeysUpdated();
+    setTimeout(() => {
+      onClose();
+    }, 1000);
   };
 
   return (

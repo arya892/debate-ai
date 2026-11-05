@@ -46,7 +46,7 @@ export async function createDebate(topic: string, settings: DebateSettings): Pro
   }
 
   // Graceful client-side fallback: generates instantly with zero error
-  return generateClientDebate(topic, settings);
+  return await generateClientDebate(topic, settings);
 }
 
 export async function getDebate(id: string): Promise<DebateRecord> {
@@ -132,7 +132,7 @@ export async function regenerateDebate(
   settings: DebateSettings
 ): Promise<DebateRecord> {
   const existing = await getDebate(id);
-  const updated = generateClientDebate(existing.topic, settings);
+  const updated = await generateClientDebate(existing.topic, settings);
   updated.id = id;
 
   try {
