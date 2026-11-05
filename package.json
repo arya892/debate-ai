@@ -1,0 +1,8 @@
+{
+  "name": "debate-ai",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run preview"
+  }
+}

@@ -97,6 +97,41 @@ export const DebateResultsPage: React.FC = () => {
     setTimeout(() => setCopiedArgId(null), 2000);
   };
 
+  const handleExportMarkdown = () => {
+    if (!debate?.result) return;
+    const { for_side, against_side } = debate.result;
+    let md = `# DEBATE DOSSIER: ${debate.topic}\n\n`;
+    md += `## FOR THE MOTION (PROPOSITION)\n\n`;
+    md += `### Opening Statement\n> ${for_side.opening_statement}\n\n`;
+    for_side.arguments.forEach((a, i) => {
+      md += `### Argument ${i + 1}: ${a.claim}\n${a.logical_explanation}\n\n**Example:** *${a.real_world_example}*\n\n`;
+    });
+    md += `### Closing Statement\n> ${for_side.concluding_statement}\n\n---\n\n`;
+    md += `## AGAINST THE MOTION (OPPOSITION)\n\n`;
+    md += `### Opening Statement\n> ${against_side.opening_statement}\n\n`;
+    against_side.arguments.forEach((a, i) => {
+      md += `### Argument ${i + 1}: ${a.claim}\n${a.logical_explanation}\n\n**Example:** *${a.real_world_example}*\n\n`;
+    });
+    md += `### Closing Statement\n> ${against_side.concluding_statement}\n`;
+
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `debate-${debate.topic.slice(0, 30).replace(/[^a-z0-9]/gi, '_')}.md`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleExportPDF = () => {
+    if (!debate.id.startsWith('deb_')) {
+      window.open(getExportUrl(debate.id, 'pdf'), '_blank');
+    } else {
+      window.print();
+    }
+  };
+
   const handleCopyCompleteDebate = () => {
     if (!debate?.result) return;
     const { for_side, against_side } = debate.result;
@@ -230,14 +265,21 @@ export const DebateResultsPage: React.FC = () => {
                 <span>{copiedAll ? 'Copied' : 'Copy All'}</span>
               </button>
 
-              <a
-                href={getExportUrl(debate.id, 'pdf')}
-                download
+              <button
+                onClick={handleExportPDF}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-cobalt hover:bg-cobalt-600 text-white font-semibold transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>PDF</span>
-              </a>
+              </button>
+
+              <button
+                onClick={handleExportMarkdown}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[#FAF8F3] hover:bg-stone-200 border border-[#252525]/15 text-charcoal transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>MD</span>
+              </button>
 
               <button
                 onClick={handleRegenerate}
